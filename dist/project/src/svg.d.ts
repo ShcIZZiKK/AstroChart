@@ -17,6 +17,7 @@ declare class SVG {
     width: number;
     height: number;
     context: this;
+    tooltip: HTMLElement;
     constructor(elementId: string, width: number, height: number, settings: Settings);
     _getSymbol(name: string, x: number, y: number): Element;
     /**
@@ -36,10 +37,11 @@ declare class SVG {
      *
      * @param {Number} x
      * @param {Number} y
+     * @param {String} name
      *
      * @return {Element} rect
      */
-    createRectForClick(x: number, y: number): Element;
+    createRectForClick(x: number, y: number, name: string): Element;
     /**
      * Get ID for sign wrapper.
      *

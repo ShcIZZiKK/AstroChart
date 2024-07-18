@@ -1,4 +1,4 @@
-import default_settings from './settings' 
+import default_settings from './settings'
 import type { Settings } from './settings'
 import Radix from './radix'
 import type { AstroData } from './radix'

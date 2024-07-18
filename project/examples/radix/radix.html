@@ -2,33 +2,74 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Radix</title>  
+        <title>Radix</title>
         <style>
         	#paper{
         		background:#999;
         	}
-        </style>                   
+        </style>
     </head>
-    <body>    	    
+    <body>
         <div id="paper"></div>
-                                      
+
         <script src="../../../dist/astrochart.js"></script>
-        <script type="text/javascript"> 
-        
-        	var data = {
-				"planets":{"Lilith":[18], "Chiron":[18], "Pluto":[63], "Neptune":[110, 0.2], "Uranus":[318], "Saturn":[201, -0.2], "Jupiter":[192], "Mars":[210], "Moon":[268], "Sun":[281], "Mercury":[312], "Venus":[330], "NNode":[2], "SNode":[182], "Fortune":[35]},
-				"cusps":[296, 350, 30, 56, 75, 94, 116, 170, 210, 236, 255, 274]			
-			};
-												      
-        	window.onload = function () {            	     
+        <script type="text/javascript">
+
+        	// var data = {
+			// 	"planets":{"Lilith":[18], "Chiron":[18], "Pluto":[63], "Neptune":[110, 0.2], "Uranus":[318], "Saturn":[201, -0.2], "Jupiter":[192], "Mars":[210], "Moon":[268], "Sun":[281], "Mercury":[312], "Venus":[330], "NNode":[2], "SNode":[182], "Fortune":[35]},
+			// 	"cusps":[296, 350, 30, 56, 75, 94, 116, 170, 210, 236, 255, 274]
+			// };
+            var data = {
+              "planets":{
+                "Sun": [
+                  328.7418
+                ],
+                "Moon": [
+                  216.3265
+                ],
+                "Mercury": [
+                  324.969
+                ],
+                "Venus": [
+                  291.027
+                ],
+                "Mars": [
+                  348.2673
+                ],
+                "Jupiter": [
+                  333.1487
+                ],
+                "Saturn": [
+                  16.9124
+                ],
+                "Uranus": [
+                  309.8462
+                ],
+                "Neptune": [
+                  300.7078
+                ],
+                "Pluto": [
+                  247.9277
+                ],
+                "Chiron": [
+                  229.1704
+                ],
+                "Sirius": [
+                  1.7675
+                ]
+              },
+              "cusps":[180, 210, 240, 270, 300, 330, 0, 30, 60, 90, 120, 150]
+            };
+
+        	window.onload = function () {
 				var radix = new astrochart.Chart('paper', 600, 600).radix( data );
-								
+
 				// Aspect calculation
-				// default is planet to planet, but it is possible add some important points:				
-				radix.addPointsOfInterest( {"As":[data.cusps[0]],"Ic":[data.cusps[3]],"Ds":[data.cusps[6]],"Mc":[data.cusps[9]]});				
-				radix.aspects();																								
+				// default is planet to planet, but it is possible add some important points:
+				radix.addPointsOfInterest( {"As":[0],"Ic":[265.8359],"Ds":[180],"Mc":[85.8359]});
+				radix.aspects();
 			};
-		</script>		    
+		</script>
     </body>
 </html>
 

@@ -21,10 +21,11 @@ export interface FormedAspect {
 }
 
 const DEFAULT_ASPECTS = {
-  conjunction: { degree: 0, orbit: 10, color: 'transparent' },
+  conjunction: { degree: 0, orbit: 10, color: '#ca00ff' },
   square: { degree: 90, orbit: 8, color: '#FF4500' },
+  sextile: { degree: 60, orbit: 8, color: '#6559ff' },
   trine: { degree: 120, orbit: 8, color: '#27AE60' },
-  opposition: { degree: 180, orbit: 10, color: '#27AE60' }
+  opposition: { degree: 180, orbit: 10, color: '#ff9d37' }
 }
 /**
    * Aspects calculator

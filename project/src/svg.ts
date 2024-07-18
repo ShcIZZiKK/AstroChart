@@ -18,6 +18,7 @@ class SVG {
   width: number
   height: number
   context: this
+  tooltip: HTMLElement
   constructor(elementId: string, width: number, height: number, settings: Settings) {
     this.settings = settings
     const rootElement = document.getElementById(elementId)
@@ -44,6 +45,22 @@ class SVG {
     this.height = height
 
     this.context = this
+
+    if (rootElement) {
+      this.tooltip = document.createElement('div')
+
+      this.tooltip.style.position = 'absolute'
+      this.tooltip.style.background = '#E0E0E0'
+      this.tooltip.style.padding = '4px 8px'
+      this.tooltip.style.transform = 'translate(-50%, -130%)'
+      this.tooltip.style.borderRadius = '4px'
+      this.tooltip.style.boxShadow = '0 0 12px -5px rgba(0,0,0,0.75)'
+      this.tooltip.style.opacity = '0'
+      this.tooltip.style.pointerEvents = 'none'
+      this.tooltip.style.transition = 'opacity 0.15s'
+
+      rootElement.appendChild(this.tooltip)
+    }
   }
 
   _getSymbol(name: string, x: number, y: number): Element {
@@ -169,16 +186,31 @@ class SVG {
    *
    * @param {Number} x
    * @param {Number} y
+   * @param {String} name
    *
    * @return {Element} rect
    */
-  createRectForClick(x: number, y: number): Element {
+  createRectForClick(x: number, y: number, name: string): Element {
     const rect = document.createElementNS(this.context.root.namespaceURI, 'rect')
     rect.setAttribute('x', (x - this.settings.SIGNS_STROKE).toString())
     rect.setAttribute('y', (y - this.settings.SIGNS_STROKE).toString())
     rect.setAttribute('width', '20px')
     rect.setAttribute('height', '20px')
     rect.setAttribute('fill', 'transparent')
+
+    rect.addEventListener('mouseenter' , () => {
+      if (this.tooltip) {
+        this.tooltip.innerText = name
+        this.tooltip.style.top = `${y}px`
+        this.tooltip.style.left = `${x}px`
+        this.tooltip.style.opacity = '1'
+      }
+    })
+
+    rect.addEventListener('mouseleave' , () => {
+      this.tooltip.style.opacity = '0'
+    })
+
     return rect
   }
 
@@ -230,6 +262,8 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4, 'Солнце'))
+
     return wrapper
   }
 
@@ -258,6 +292,8 @@ class SVG {
     node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
+
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4, 'Луна'))
 
     return wrapper
   }
@@ -297,6 +333,8 @@ class SVG {
     crown.setAttribute('fill', 'none')
     wrapper.appendChild(crown)
 
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4, 'Меркурий'))
+
     return wrapper
   }
 
@@ -325,6 +363,8 @@ class SVG {
     node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
+
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4, 'Венера'))
 
     return wrapper
   }
@@ -355,6 +395,8 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4, 'Марс'))
+
     return wrapper
   }
 
@@ -384,7 +426,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 3))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 3, 'Юпитер'))
 
     return wrapper
   }
@@ -414,6 +456,8 @@ class SVG {
     node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
+
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4, 'Сатурн'))
 
     return wrapper
   }
@@ -453,7 +497,7 @@ class SVG {
     body.setAttribute('fill', 'none')
     wrapper.appendChild(body)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Уран'))
 
     return wrapper
   }
@@ -483,6 +527,8 @@ class SVG {
     node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
+
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4, 'Нептун'))
 
     return wrapper
   }
@@ -522,6 +568,8 @@ class SVG {
     head.setAttribute('fill', 'none')
     wrapper.appendChild(head)
 
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4, 'Плутон'))
+
     return wrapper
   }
 
@@ -560,6 +608,8 @@ class SVG {
     head.setAttribute('fill', 'none')
     wrapper.appendChild(head)
 
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4, 'Хирон'))
+
     return wrapper
   }
 
@@ -588,6 +638,8 @@ class SVG {
     node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
+
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4, 'Лилит'))
 
     return wrapper
   }
@@ -618,6 +670,8 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4, 'Северный узел'))
+
     return wrapper
   }
 
@@ -647,6 +701,8 @@ class SVG {
     node.setAttribute('stroke-width', this.settings.POINTS_STROKE.toString())
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
+
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4, 'Южный узел'))
 
     return wrapper
   }
@@ -689,6 +745,7 @@ class SVG {
     wrapper.setAttribute('fill', 'none')
     wrapper.appendChild(fortuneGroup)
 
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4, 'Фортуна'))
 
     return wrapper
   }
@@ -721,7 +778,7 @@ class SVG {
 
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y - 4, 'Овен'))
 
     return wrapper
   }
@@ -753,7 +810,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Телец'))
     return wrapper
   }
 
@@ -784,7 +841,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Близнецы'))
     return wrapper
   }
 
@@ -815,7 +872,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x - 18, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x - 18, y, 'Рак'))
     return wrapper
   }
 
@@ -846,7 +903,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x - 6, y - 13))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x - 6, y - 13, 'Лев'))
     return wrapper
   }
 
@@ -877,7 +934,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Дева'))
     return wrapper
   }
 
@@ -908,7 +965,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x - 6, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x - 6, y, 'Весы'))
     return wrapper
   }
 
@@ -939,7 +996,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Скорпион'))
     return wrapper
   }
 
@@ -970,7 +1027,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x - 12, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x - 12, y, 'Стрелец'))
     return wrapper
   }
 
@@ -1001,7 +1058,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Козерог'))
     return wrapper
   }
 
@@ -1032,7 +1089,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Водолей'))
     return wrapper
   }
 
@@ -1063,7 +1120,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Рыбы'))
     return wrapper
   }
 
@@ -1178,7 +1235,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Первый дом'))
     return wrapper
   }
 
@@ -1200,7 +1257,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Второй дом'))
     return wrapper
   }
 
@@ -1222,7 +1279,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Третий дом'))
     return wrapper
   }
 
@@ -1244,7 +1301,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Четвёртый дом'))
     return wrapper
   }
 
@@ -1266,7 +1323,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Пятый дом'))
     return wrapper
   }
 
@@ -1288,7 +1345,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Шестой дом'))
     return wrapper
   }
 
@@ -1310,7 +1367,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Седьмой дом'))
     return wrapper
   }
 
@@ -1332,7 +1389,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Восьмой дом'))
     return wrapper
   }
 
@@ -1354,7 +1411,7 @@ class SVG {
     node.setAttribute('fill', 'none')
     wrapper.appendChild(node)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Девятый дом'))
     return wrapper
   }
 
@@ -1385,7 +1442,7 @@ class SVG {
     zero.setAttribute('fill', 'none')
     wrapper.appendChild(zero)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Десятый дом'))
     return wrapper
   }
 
@@ -1416,7 +1473,7 @@ class SVG {
     one2.setAttribute('fill', 'none')
     wrapper.appendChild(one2)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Одиннадцатый дом'))
     return wrapper
   }
 
@@ -1447,7 +1504,7 @@ class SVG {
     two.setAttribute('fill', 'none')
     wrapper.appendChild(two)
 
-    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y))
+    if (this.settings.ADD_CLICK_AREA) wrapper.appendChild(this.createRectForClick(x, y, 'Двенадцатый дом'))
     return wrapper
   }
 
